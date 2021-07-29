@@ -1,36 +1,41 @@
-//+------------------------------------------------------------------+
-//|                                                   ICHIMOKUEA.mq4 |
-//|                        Copyright 2021, MetaQuotes Software Corp. |
-//|                                             https://www.mql5.com |
-//+------------------------------------------------------------------+
-#property copyright "Copyright 2021, MetaQuotes Software Corp."
-#property link      "https://www.mql5.com"
-#property version   "1.00"
-#property strict
-//+------------------------------------------------------------------+
-//| Expert initialization function                                   |
-//+------------------------------------------------------------------+
-int OnInit()
-  {
-//---
-   
-//---
-   return(INIT_SUCCEEDED);
-  }
-//+------------------------------------------------------------------+
-//| Expert deinitialization function                                 |
-//+------------------------------------------------------------------+
-void OnDeinit(const int reason)
-  {
-//---
-   
-  }
-//+------------------------------------------------------------------+
-//| Expert tick function                                             |
-//+------------------------------------------------------------------+
+
 void OnTick()
   {
 //---
+
+   string signal = "";
    
+   double TenkanSenValue = iIchimoku(_Symbol,_Period,9,26,52,MODE_TENKANSEN,0);
+   double KijunSenValue = iIchimoku(_Symbol,_Period,9,26,52,MODE_KIJUNSEN,0);
+   double SenkouSpanAValue = iIchimoku(_Symbol,_Period,9,26,52,MODE_SENKOUSPANA,-26);
+   double SenkouSpanBValue = iIchimoku(_Symbol,_Period,9,26,52,MODE_SENKOUSPANB,-26);
+   double ChikouSpanValue = iIchimoku(_Symbol,_Period,9,26,52,MODE_CHIKOUSPAN,26);
+   
+   Comment(
+      "TenkanSen Value: ",TenkanSenValue,"\n",
+      "KijunSen Value: ",KijunSenValue,"\n",
+      "SenkouSpanA Value: ",SenkouSpanAValue,"\n",
+      "SenkouSpanB Value: ",SenkouSpanBValue,"\n",
+      "ChikouSpan Value: " ,ChikouSpanValue,"\n" 
+   );
+   
+   if(SenkouSpanBValue>SenkouSpanAValue)(signal = "buy");
+   if(SenkouSpanBValue<SenkouSpanAValue)(signal = "sell");
+   
+      
+
+  
+   if(signal=="buy" && OrdersTotal()==0)(OrderSend(_Symbol,OP_BUY,0.10,Ask,3,Ask-400*_Point,Ask+50*_Point,NULL,0,0,Green));
+   if(signal=="sell" && OrdersTotal()==0)(OrderSend(_Symbol,OP_SELL,0.10,Ask,3,Ask+400*_Point,Ask-50*_Point,NULL,0,0,Red));
+   
+   Comment("The current signal is: ",signal);
+  
+  
+  
+  
+  
   }
+  
+  
+  
 //+------------------------------------------------------------------+
