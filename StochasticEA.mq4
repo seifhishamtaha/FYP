@@ -1,36 +1,24 @@
-//+------------------------------------------------------------------+
-//|                                                 StochasticEA.mq4 |
-//|                        Copyright 2021, MetaQuotes Software Corp. |
-//|                                             https://www.mql5.com |
-//+------------------------------------------------------------------+
-#property copyright "Copyright 2021, MetaQuotes Software Corp."
-#property link      "https://www.mql5.com"
-#property version   "1.00"
-#property strict
-//+------------------------------------------------------------------+
-//| Expert initialization function                                   |
-//+------------------------------------------------------------------+
-int OnInit()
-  {
-//---
-   
-//---
-   return(INIT_SUCCEEDED);
-  }
-//+------------------------------------------------------------------+
-//| Expert deinitialization function                                 |
-//+------------------------------------------------------------------+
-void OnDeinit(const int reason)
-  {
-//---
-   
-  }
-//+------------------------------------------------------------------+
-//| Expert tick function                                             |
-//+------------------------------------------------------------------+
+
 void OnTick()
   {
 //---
+   string signal = "";
    
+   double K0 = iStochastic(_Symbol,_Period,5,3,3,MODE_SMA,0,MODE_MAIN,0);
+   double D0 = iStochastic(_Symbol,_Period,5,3,3,MODE_SMA,0,MODE_SIGNAL,0);
+   double K1 = iStochastic(_Symbol,_Period,5,3,3,MODE_SMA,0,MODE_MAIN,1);
+   double D1 = iStochastic(_Symbol,_Period,5,3,3,MODE_SMA,0,MODE_SIGNAL,1);
+   
+   
+   if(K0<20 && D0<20)if(D0<K0 && D1>K1)(signal = "buy");
+   if(K0>80 && D0>80)if(D0>K0 && D1<K1)(signal = "sell");
+   
+      
+
+  
+   if(signal=="buy" && OrdersTotal()==0)(OrderSend(_Symbol,OP_BUY,0.10,Ask,3,Ask-150*_Point,Ask+150*_Point,NULL,0,0,Green));
+   if(signal=="sell" && OrdersTotal()==0)(OrderSend(_Symbol,OP_SELL,0.10,Ask,3,Ask+150*_Point,Ask-150*_Point,NULL,0,0,Red));
+   
+   Comment("The current signal is: ",signal);
   }
 //+------------------------------------------------------------------+
