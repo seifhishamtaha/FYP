@@ -13,11 +13,9 @@ void OnTick()
    if(K0<20 && D0<20)if(D0<K0 && D1>K1)(signal = "buy");
    if(K0>80 && D0>80)if(D0>K0 && D1<K1)(signal = "sell");
    
-      
-
   
-   if(signal=="buy" && OrdersTotal()==0)(OrderSend(_Symbol,OP_BUY,0.10,Ask,3,Ask-150*_Point,Ask+150*_Point,NULL,0,0,Green));
-   if(signal=="sell" && OrdersTotal()==0)(OrderSend(_Symbol,OP_SELL,0.10,Ask,3,Ask+150*_Point,Ask-150*_Point,NULL,0,0,Red));
+   if(signal=="buy" && OrdersTotal()==0)(OrderSend(_Symbol,OP_BUY,0.10,Ask,3,Ask-450*_Point,Ask+150*_Point,NULL,0,0,Green));
+   if(signal=="sell" && OrdersTotal()==0)(OrderSend(_Symbol,OP_SELL,0.10,Ask,3,Ask+450*_Point,Ask-150*_Point,NULL,0,0,Red));
    
    Comment("The current signal is: ",signal);
   }

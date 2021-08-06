@@ -18,10 +18,10 @@ void OnTick()
    if(Bid<MovingAverage)if(IADValue<LastADValue)(signal="sell");
    
    if (signal=="buy" && OrdersTotal()==0)
-   (OrderSend(_Symbol,OP_BUY,0.10,Ask,3,0,Ask+150*_Point,NULL,0,0,Green));
+   (OrderSend(_Symbol,OP_BUY,0.10,Ask,3,Ask-450*_Point,Ask+150*_Point,NULL,0,0,Green));
    
    if (signal=="sell" && OrdersTotal()==0)
-   (OrderSend(_Symbol,OP_SELL,0.10,Ask,3,0,Ask-150*_Point,NULL,0,0,Red));
+   (OrderSend(_Symbol,OP_SELL,0.10,Ask,3,Ask+450*_Point,Ask-150*_Point,NULL,0,0,Red));
    
    Comment("The current signal is: ",signal);
   }
